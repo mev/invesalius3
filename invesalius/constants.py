@@ -654,6 +654,7 @@ BOOLEAN_UNION = 1
 BOOLEAN_DIFF = 2
 BOOLEAN_AND = 3
 BOOLEAN_XOR = 4
+BOOLEAN_MIRROR_DIFF = 5
 
 #------------ Navigation defaults -------------------
 

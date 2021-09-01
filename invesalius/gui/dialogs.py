@@ -1946,7 +1946,8 @@ class MaskBooleanDialog(wx.Dialog):
         op_choices = ((_(u"Union"), const.BOOLEAN_UNION, 'bool_union.png'),
                       (_(u"Difference"), const.BOOLEAN_DIFF, 'bool_difference.png'),
                       (_(u"Intersection"), const.BOOLEAN_AND, 'bool_intersection.png'),
-                      (_(u"Exclusive disjunction"), const.BOOLEAN_XOR, 'bool_disjunction.png'))
+                      (_(u"Exclusive disjunction"), const.BOOLEAN_XOR, 'bool_disjunction.png'),
+                      (_(u"Mirror Difference"), const.BOOLEAN_MIRROR_DIFF, 'bool_mirror_difference.png'))
         self.op_boolean = BitmapComboBox(self, -1, op_choices[0][0], choices=[])
 
         for n, i, f in op_choices:

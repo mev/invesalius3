@@ -1615,6 +1615,7 @@ class Slice(metaclass=utils.Singleton):
             const.BOOLEAN_DIFF: _(u"Diff"),
             const.BOOLEAN_AND: _(u"Intersection"),
             const.BOOLEAN_XOR: _(u"XOR"),
+            const.BOOLEAN_MIRROR_DIFF: _(u"MDiff"),
         }
 
         name = u"%s_%s_%s" % (name_ops[op], m1.name, m2.name)
@@ -1648,6 +1649,10 @@ class Slice(metaclass=utils.Singleton):
 
         elif op == const.BOOLEAN_XOR:
             m[:] = np.logical_xor((m1 > 2), (m2 > 2)) * 255
+
+        elif op == const.BOOLEAN_MIRROR_DIFF:
+            m1[:] = m1[:, :, ::-1]
+            m[:] = ((m1 > 2) ^ ((m1 > 2) & (m2 > 2))) * 255
 
         for o in self.buffer_slices:
             self.buffer_slices[o].discard_mask()
