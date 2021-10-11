@@ -558,6 +558,9 @@ class Frame(wx.Frame):
         elif id == const.ID_CREATE_MASK:
             Publisher.sendMessage('New mask from shortcut')
 
+        elif id == const.ID_POSTPROCESS:
+            self.RunPostprocessor()
+
         elif id == const.ID_PLUGINS_SHOW_PATH:
             self.ShowPluginsFolder()
 
@@ -618,6 +621,7 @@ class Frame(wx.Frame):
             ses.Session().surface_interpolation = values[const.SURFACE_INTERPOLATION]
             ses.Session().language = values[const.LANGUAGE]
             ses.Session().slice_interpolation = values[const.SLICE_INTERPOLATION]
+            ses.Session().binding = values[const.BINDING]
             ses.Session().WriteSessionFile()
 
             Publisher.sendMessage('Remove Volume')
@@ -816,6 +820,22 @@ class Frame(wx.Frame):
 
     def OnUpdateMaskPreview(self):
         Publisher.sendMessage('Update mask 3D preview')
+
+    def RunPostprocessor(self):
+        """
+        Show getting started window.
+        """
+        preferences_dialog = preferences.Preferences(self)
+        preferences_dialog.LoadPreferences()
+        preferences_dialog.Center()
+        values = preferences_dialog.GetPreferences()
+        path = values[const.BINDING]
+        if platform.system() == "Windows":
+            os.startfile(path)
+        elif platform.system() == "Darwin":
+            subprocess.Popen(path)
+        else:
+            subprocess.Popen(path)
 
     def ShowPluginsFolder(self):
         """
@@ -1061,6 +1081,7 @@ class MenuBar(wx.MenuBar):
         tools_menu.Append(-1,  _(u"Mask"), mask_menu)
         tools_menu.Append(-1, _(u"Segmentation"), segmentation_menu)
         tools_menu.Append(-1, _(u"Surface"), surface_menu)
+        tools_menu.Append(const.ID_POSTPROCESS, _(u"Run postprocessing software"))
         self.tools_menu = tools_menu
 
         #View

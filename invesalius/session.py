@@ -74,6 +74,7 @@ class Session(metaclass=Singleton):
             'project_status': ('session', 'status'),
             'debug': ('session', 'debug'),
             'language': ('session', 'language'),
+            'binding': ('session', 'binding'),
             'random_id': ('session', 'random_id'),
             'surface_interpolation': ('session', 'surface_interpolation'),
             'rendering': ('session', 'rendering'),
@@ -94,6 +95,7 @@ class Session(metaclass=Singleton):
                 'status': const.PROJ_CLOSE,
                 'debug': False,
                 'language': "",
+                'binding': "",
                 'random_id': randint(0, pow(10,16)),
                 'surface_interpolation': 1,
                 'rendering': 0,
@@ -249,6 +251,12 @@ class Session(metaclass=Singleton):
     def SetLanguage(self, language):
         self.language = language
 
+    def GetBinding(self):
+        return self.binding
+
+    def SetBinding(self, binding):
+        self.binding = binding
+
     def GetRandomId(self):
         return self.random_id
 
@@ -290,6 +298,7 @@ class Session(metaclass=Singleton):
         #self.project_status = int(config.get('session', 'status'))
         self.debug = config.getboolean('session','debug')
         self.language = config.get('session','language')
+        self.binding = config.get('session','binding')
         recent_projects = eval(config.get('project','recent_projects'))
         self.recent_projects = [list(rp) for rp in recent_projects]
         self.homedir = config.get('paths','homedir')

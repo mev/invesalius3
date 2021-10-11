@@ -22,11 +22,13 @@ class Preferences(wx.Dialog):
         self.pnl_viewer3d = Viewer3D(self.book)
         #  self.pnl_surface = SurfaceCreation(self)
         self.pnl_language = Language(self.book)
+        self.pnl_binding = Binding(self.book)
 
         self.book.AddPage(self.pnl_viewer2d, _("2D Visualization"))
         self.book.AddPage(self.pnl_viewer3d, _("3D Visualization"))
         #  self.book.AddPage(self.pnl_surface, _("Surface creation"))
         self.book.AddPage(self.pnl_language, _("Language"))
+        self.book.AddPage(self.pnl_binding, _("Binding"))
 
         btnsizer = self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL)
 
@@ -50,9 +52,11 @@ class Preferences(wx.Dialog):
         lang = self.pnl_language.GetSelection()
         viewer = self.pnl_viewer3d.GetSelection()
         viewer2d = self.pnl_viewer2d.GetSelection()
+        binding = self.pnl_binding.GetSelection()
         values.update(lang)
         values.update(viewer)
         values.update(viewer2d)
+        values.update(binding)
 
         return values
 
@@ -64,11 +68,13 @@ class Preferences(wx.Dialog):
             const.SURFACE_INTERPOLATION: se.surface_interpolation,
             const.LANGUAGE: se.language,
             const.SLICE_INTERPOLATION: se.slice_interpolation,
+            const.BINDING: se.binding,
         }
 
         self.pnl_viewer2d.LoadSelection(values)
         self.pnl_viewer3d.LoadSelection(values)
         self.pnl_language.LoadSelection(values)
+        self.pnl_binding.LoadSelection(values)
 
 
 class Viewer3D(wx.Panel):
@@ -193,6 +199,39 @@ class Language(wx.Panel):
         locales = self.lg.GetLocalesKey()
         selection = locales.index(language)
         self.cmb_lang.SetSelection(int(selection))
+
+
+class Binding(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+
+        bsizer = wx.StaticBoxSizer(wx.VERTICAL, self, _("Bindings"))
+        self.binding = binding = wx.TextCtrl(
+            bsizer.GetStaticBox(),
+            -1,
+            style=wx.RA_SPECIFY_COLS | wx.NO_BORDER,
+        )
+        text = wx.StaticText(
+            bsizer.GetStaticBox(),
+            -1,
+            _("Bindings settings will be applied \n the next time InVesalius starts."),
+        )
+        bsizer.Add(binding, 0, wx.EXPAND | wx.ALL, 10)
+        bsizer.AddSpacer(5)
+        bsizer.Add(text, 0, wx.EXPAND | wx.ALL, 10)
+
+        border = wx.BoxSizer()
+        border.Add(bsizer, 1, wx.EXPAND | wx.ALL, 10)
+        self.SetSizerAndFit(border)
+        self.Layout()
+
+    def GetSelection(self):
+        options = {const.BINDING: self.binding.GetValue()}
+        return options
+
+    def LoadSelection(self, values):
+        value = values[const.BINDING]
+        self.binding.SetValue(value)
 
 
 class SurfaceCreation(wx.Panel):
