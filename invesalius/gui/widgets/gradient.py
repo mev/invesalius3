@@ -158,8 +158,10 @@ class GradientSlider(wx.Panel):
 
         # Drawing the transparent coloured overlay
         if self._gradient_colours is None:
-            brush = wx.Brush(wx.Colour(*self.colour))
-            pen = wx.Pen(wx.Colour(*self.colour))
+            print(*self.colour, sep='\n')
+            colorList = [ int(x) for x in self.colour ]
+            brush = wx.Brush(wx.Colour(*colorList))
+            pen = wx.Pen(wx.Colour(*colorList))
             gc.SetBrush(brush)
             gc.SetPen(pen)
             path = gc.CreatePath()
